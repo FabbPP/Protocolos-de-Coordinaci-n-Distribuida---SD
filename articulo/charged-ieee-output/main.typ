@@ -312,7 +312,43 @@ Se implementaron y compararon experimentalmente cuatro protocolos de coordinaci�
 // =============================================================================
 
 = Apéndice
-Link de Github: 
+
+== Codigo Fuente
+#link("https://github.com/unsa-semester-2026-A/sis_dis_lab/tree/main/Proyecto_final", "Repositorio del Proyecto")
+
+== Reproducibilidad
+Todos los experimentos son reproducibles mediante:
+1. `cd docker && docker compose up -d --build`
+2. `cd experiments && sh run_experiments.sh`
+3. `python analyze_results.py results graphs`
+
+El código fuente completo está disponible en el repositorio del laboratorio.
+
+===  Requisitos previos
+
+#table(
+  columns: (auto, auto, auto),
+  align: (left, left, left),
+  table.header[*Herramienta*, *Versión mínima*, *Verificación*],
+  [Docker], [24+], [`docker --version`],
+  [Docker Compose], [v2], [`docker compose version`],
+  [Python], [3.11+], [`python --version`],
+  [Bash], [4+], [`bash --version`],
+  [Typst (opcional)], [0.12+], [`typst --version`],
+)
+Mapeo de puertos al host:
+- pg-arequipa → `localhost:5432`
+- pg-lima → `localhost:5433`
+- pg-cusco → `localhost:5434`
+
+=== Ejecución de experimentos 
+
+Opción rápida: script con todos los escenarios
+```bash
+cd articulo/scripts
+chmod +x *.sh
+./run_all.sh
+```
 
 == Configuración de PostgreSQL
 
@@ -322,10 +358,6 @@ Parámetros relevantes de _postgresql.conf_: `wal_level = replica`, `max_wal_sen
 
 Cuentas iniciales: Alvaro Quispe (Arequipa, S/ 50,000), Fabiana Pacheco (Lima, S/ 20,000), Mathias Barrios (Cusco, S/ 30,000). Las transferencias son por montos crecientes de S/ 500 a S/ 640 en incrementos de S/ 10.
 
-== Reproducibilidad
 
-Todos los experimentos son reproducibles mediante: (1) `cd docker && docker compose up -d --build`, (2) `cd experiments && sh run_experiments.sh`, (3) `python analyze_results.py results graphs`. El código fuente completo está disponible en el repositorio del laboratorio.
 
-== Código Fuente
 
-Repositorio: `articulo/src/` contiene los módulos `db.py`, `coordinator_2pc.py`, `saga_orchestrator.py`, `tcc_orchestrator.py` y `raft_node.py`. La documentación de trazabilidad está en `apendice_code.txt`.
