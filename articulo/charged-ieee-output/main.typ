@@ -474,7 +474,10 @@ En conjunto, los resultados experimentales confirman que no existe un protocolo 
 = Apéndice
 
 == Código Fuente
-#link("https://github.com/FabbPP/Protocolos-de-Coordinaci-n-Distribuida---SD", "Repositorio del Proyecto")
+#link("https://github.com/FabbPP/Protocolos-de-Coordinaci-n-Distribuida---SD", "Click para ver el Repositorio del Proyecto")
+#link("https://canva.link/c6t621px9427isa", "Click para ver las diapositivas de Presentación")
+
+
 
 == Dashboard Interactivo
 
