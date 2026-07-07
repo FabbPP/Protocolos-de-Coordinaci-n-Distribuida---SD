@@ -1,0 +1,27 @@
+@startditaa
+scale 0.8
+
++----------------------------------------------------------------------------------+
+|             Latencia por protocolo y escenario (ms)                               |
++------------------------------------------+---------------------------------------+
+| <b>Esc A - Éxito<b>                       | <b>Esc B - Fallo red<b>                |
++------------------------------------------+---------------------------------------+
+| 2PC  |rrrrr| 30.51                        | 2PC  |rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr| 323.77
+|      |     |                              |      | rrrrrrrrrrrrrrrrrrrr            |       
+| Saga |rrrrr| 29.27                        | Saga |rrrrrr| 39.05                   |
+|      |     |                              |      |      |                         |
+| TCC  |rrrrrrrrrrrrrrrrrr| 114.02          | TCC  |rrrrrrrrrrrrrrrrr| 109.32       |
+|      |                  |                 |      |                 |              |
+| Raft |rrrrrrrrrrrrrrrrr| 94.30            | Raft |rrrrrrrrrrrrrrrrrrrrrrrrrr| 178.24
++------------------------------------------+---------------------------------------+
+| <b>Esc C - Caída nodo<b>                  | <b>Esc D - Recuperación<b>            |
++------------------------------------------+---------------------------------------+
+| 2PC  |rrrr| 24.99                         | 2PC  |rrrr| 24.41                    |
+|      |    |                               |      |    |                          |
+| Saga |rrrrrr| 37.24                       | Saga |rrrr| 28.00                    |
+|      |      |                             |      |    |                          |
+| TCC  |rrrrrrrrrrrrrrrrr| 109.94           | TCC  |rrrrrrrrrrrrrrrrrr| 117.04     |
+|      |                 |                  |      |                  |            |
+| Raft |rrrrrrrrrrrrrrrrr| 97.05            | Raft |rrrrrrrrrrrrrrrrr| 95.70      |
++------------------------------------------+---------------------------------------+
+@endditaa

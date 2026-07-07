@@ -1,0 +1,39 @@
+@startuml
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Times New Roman
+skinparam defaultFontSize 10
+skinparam componentStyle rectangle
+skinparam rectangle {
+  BorderColor #2C3E50
+  BackgroundColor #ECF0F1
+}
+skinparam node {
+  BorderColor #2980B9
+  BackgroundColor #D6EAF8
+  FontColor #1A5276
+}
+skinparam database {
+  BorderColor #27AE60
+  BackgroundColor #D5F5E3
+  FontColor #1E8449
+}
+skinparam arrow {
+  Color #7F8C8D
+  Thickness 1.5
+}
+
+title \n<b>Fig 1: Topología Docker — 3 nodos PostgreSQL + orquestador</b>\n
+
+rectangle "Red Docker Bridge\n10.2.0.0/24" as net {
+  database "pg-arequipa\n10.2.0.2" as pg1
+  database "pg-lima\n10.2.0.3" as pg2
+  database "pg-cusco\n10.2.0.4" as pg3
+  node "Orquestador Python\n10.2.0.5" as app
+}
+
+app --> pg1 : PostgreSQL :5432
+app --> pg2 : PostgreSQL :5432
+app --> pg3 : PostgreSQL :5432
+
+@enduml

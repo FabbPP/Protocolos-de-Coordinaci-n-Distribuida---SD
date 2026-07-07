@@ -1,0 +1,21 @@
+@startditaa
+scale 0.8
+
++----------------------------------------------------------------------+
+|          Tasa de éxito por protocolo y escenario (%)                   |
++----------------------------------+-----------------------------------+
+| <b>Esc A - Éxito<b>               | <b>Esc B - Fallo red<b>            |
++----------------------------------+-----------------------------------+
+| 2PC  |gggggggggggggggggggg| 100% | 2PC  |rr| 0%                      |
+| Saga |gggggggggggggggggggg| 100% | Saga |rr| 0%                      |
+| TCC  |gggggggggggggggggggg| 100% | TCC  |rr| 0%                      |
+| Raft |gggggggggggggggggggg| 100% | Raft |gggggggggggggggggggg| 100%  |
++----------------------------------+-----------------------------------+
+| <b>Esc C - Caída nodo<b>          | <b>Esc D - Recuperación<b>         |
++----------------------------------+-----------------------------------+
+| 2PC  |rr| 0%                      | 2PC  |rr| 0%                      |
+| Saga |rr| 0%                      | Saga |gggggggggggggggggggg| 100% |
+| TCC  |rr| 0%                      | TCC  |gggggggggggggggggggg| 100% |
+| Raft |gggggggggggggggggggg| 100% | Raft |gggggggggggggggggggg| 100% |
++----------------------------------+-----------------------------------+
+@endditaa

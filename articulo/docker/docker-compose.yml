@@ -1,0 +1,117 @@
+version: "3.9"
+
+services:
+  # ===========================================================================
+  # PostgreSQL — Nodos (cada contenedor simula una sede geográfica)
+  # ===========================================================================
+
+  pg-arequipa:
+    image: postgres:15-alpine
+    container_name: pg-arequipa
+    environment:
+      POSTGRES_USER: sdhm
+      POSTGRES_PASSWORD: ""
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./init/01-arequipa.sql:/docker-entrypoint-initdb.d/01-init.sql
+      - pgdata_arequipa:/var/lib/postgresql/data
+    networks:
+      two-pc-net:
+        ipv4_address: 10.2.0.10
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sdhm"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+  pg-lima:
+    image: postgres:15-alpine
+    container_name: pg-lima
+    environment:
+      POSTGRES_USER: sdhm
+      POSTGRES_PASSWORD: ""
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./init/02-lima.sql:/docker-entrypoint-initdb.d/01-init.sql
+      - pgdata_lima:/var/lib/postgresql/data
+    networks:
+      two-pc-net:
+        ipv4_address: 10.2.0.20
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sdhm"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+  pg-cusco:
+    image: postgres:15-alpine
+    container_name: pg-cusco
+    environment:
+      POSTGRES_USER: sdhm
+      POSTGRES_PASSWORD: ""
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5434:5432"
+    volumes:
+      - ./init/03-cusco.sql:/docker-entrypoint-initdb.d/01-init.sql
+      - pgdata_cusco:/var/lib/postgresql/data
+    networks:
+      two-pc-net:
+        ipv4_address: 10.2.0.30
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sdhm"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+  # ===========================================================================
+  # Aplicación — Coordinador 2PC (Python)
+  # ===========================================================================
+
+  app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: two-pc-app
+    environment:
+      PG_HOST_almacen_arequipa: pg-arequipa
+      PG_HOST_almacen_lima: pg-lima
+      PG_HOST_banco_arequipa: pg-arequipa
+      PG_HOST_banco_cusco: pg-cusco
+      PG_HOST_banco_lima: pg-lima
+      PG_PORT_almacen_arequipa: "5432"
+      PG_PORT_almacen_lima: "5432"
+      PG_PORT_banco_arequipa: "5432"
+      PG_PORT_banco_cusco: "5432"
+      PG_PORT_banco_lima: "5432"
+    volumes:
+      - ../src:/app/src
+      - ../experiments:/app/experiments
+    networks:
+      two-pc-net:
+        ipv4_address: 10.2.0.100
+    depends_on:
+      pg-arequipa:
+        condition: service_healthy
+      pg-lima:
+        condition: service_healthy
+      pg-cusco:
+        condition: service_healthy
+    stdin_open: true
+    tty: true
+
+volumes:
+  pgdata_arequipa:
+  pgdata_lima:
+  pgdata_cusco:
+
+networks:
+  two-pc-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.2.0.0/24

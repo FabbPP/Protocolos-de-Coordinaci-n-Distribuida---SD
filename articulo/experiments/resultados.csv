@@ -1,0 +1,1 @@
+protocolo,escenario,repeticion,operacion_id,timestamp,prepare_latency_ms,commit_latency_ms,total_latency_ms,exito,nodos_involucrados,tipo_fallo,compensaciones,observaciones
