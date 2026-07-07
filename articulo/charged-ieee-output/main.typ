@@ -288,19 +288,31 @@ Saga, TCC y Raft lograron 100% de recuperación exitosa. 2PC muestra 0% porque s
 
 == Análisis Comparativo Global
 
-Las Figuras 2 y 3 presentan las gráficas comparativas generadas con PlantUML a partir de los datos experimentales: latencia por protocolo y escenario, y tasa de éxito.
+Las Figuras @fig:latencia, @fig:exito, @fig:compensaciones y @fig:recovery presentan las gráficas comparativas generadas con Matplotlib en Python a partir de los datos experimentales. El dashboard interactivo se ejecuta mediante `streamlit run articulo/experiments/analyze_results.py` desde el entorno virtual.
 
 #figure(
   placement: top,
   caption: [Latencia comparativa por protocolo y escenario (ms).],
-  image("figures/fig2a_latencia.png", width: 100%),
+  image("figures/latencia_comparativa.png", width: 100%),
 ) <fig:latencia>
 
 #figure(
   placement: top,
   caption: [Tasa de éxito por protocolo y escenario (%).],
-  image("figures/fig2b_exito.png", width: 100%),
+  image("figures/tasa_exito.png", width: 100%),
 ) <fig:exito>
+
+#figure(
+  placement: top,
+  caption: [Compensaciones ejecutadas por protocolo y escenario.],
+  image("figures/compensaciones.png", width: 100%),
+) <fig:compensaciones>
+
+#figure(
+  placement: top,
+  caption: [Tiempo de recuperación por protocolo (ms).],
+  image("figures/recovery_time.png", width: 100%),
+) <fig:recovery>
 
 == Código Relevante
 
@@ -454,13 +466,44 @@ En conjunto, los resultados experimentales confirman que no existe un protocolo 
 
 = Apéndice
 
-== Codigo Fuente
-#link("https://github.com/unsa-semester-2026-A/sis_dis_lab/tree/main/Proyecto_final", "Repositorio del Proyecto")
+== Código Fuente
+#link("https://github.com/FabbPP/Protocolos-de-Coordinaci-n-Distribuida---SD", "Repositorio del Proyecto")
+
+== Dashboard Interactivo
+
+Las gráficas del artículo se generaron con Matplotlib en Python. El proyecto incluye un dashboard interactivo desarrollado con Streamlit para explorar visualmente los resultados experimentales. Para ejecutarlo desde el entorno virtual:
+
+```bash
+./env/Scripts/activate
+streamlit run articulo/experiments/analyze_results.py
+```
+
+Las Figuras @fig:dash1, @fig:dash2 y @fig:dash3 muestran capturas del dashboard en funcionamiento.
+
+#figure(
+  placement: top,
+  caption: [Dashboard interactivo — vista general de latencia por protocolo.],
+  image("figures/dashboard_1.png", width: 100%),
+) <fig:dash1>
+
+#figure(
+  placement: top,
+  caption: [Dashboard interactivo — tasa de éxito y compensaciones.],
+  image("figures/dashboard_2.png", width: 100%),
+) <fig:dash2>
+
+#figure(
+  placement: top,
+  caption: [Dashboard interactivo — análisis de recuperación.],
+  image("figures/dashboard_3.png", width: 100%),
+) <fig:dash3>
 
 == Reproducibilidad
-Todos los experimentos son reproducibles mediante:
-1. `cd docker && docker compose up -d --build`
-2. `cd experiments && sh run_experiments.sh`
-3. `python analyze_results.py results graphs`
+Todos los experimentos son reproducibles mediante los siguientes pasos, documentados en el #link("https://github.com/FabbPP/Protocolos-de-Coordinaci-n-Distribuida---SD", "README del repositorio"):
 
-El código fuente completo está disponible en el repositorio del laboratorio.
+1. `cd articulo/docker && docker compose up -d --build`
+2. `cd articulo/experiments && sh run_experiments.sh`
+3. `python analyze_results.py results graphs`
+4. `streamlit run articulo/experiments/analyze_results.py` (dashboard interactivo)
+
+El código fuente completo está disponible en el repositorio del proyecto.

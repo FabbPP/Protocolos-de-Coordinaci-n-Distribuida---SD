@@ -308,18 +308,13 @@ def run_dashboard():
     import pandas as pd
 
     st.set_page_config(
-        page_title="Protocolos de Coordinación Distribuida - Dashboard",
-        page_icon="📊",
+        page_title="Protocolos de Coordinacion Distribuida - Dashboard",
         layout="wide",
         initial_sidebar_state="expanded",
     )
 
     # ── Sidebar ──────────────────────────────────────────────────────────
-    st.sidebar.image(
-        "https://img.icons8.com/fluency/96/dashboard.png",
-        width=60,
-    )
-    st.sidebar.title("⚙️ Controles")
+    st.sidebar.title("Controles")
     st.sidebar.markdown("---")
 
     selected_protocols = st.sidebar.multiselect(
@@ -336,13 +331,13 @@ def run_dashboard():
     )
     st.sidebar.markdown("---")
     st.sidebar.markdown(
-        "**¿Qué es esto?**\n\n"
-        "Dashboard interactivo que compara 4 protocolos de coordinación "
+        "**Que es esto?**\n\n"
+        "Dashboard interactivo que compara 4 protocolos de coordinacion "
         "distribuida (2PC, Saga, TCC, Raft) en 4 escenarios de fallo."
     )
 
     st.sidebar.markdown("---")
-    if st.sidebar.button("🔄 Recargar datos", width="stretch"):
+    if st.sidebar.button("Recargar datos", width="stretch"):
         st.rerun()
 
     # ── Carga de datos ───────────────────────────────────────────────────
@@ -371,7 +366,7 @@ def run_dashboard():
 
     raw_data = load_data_cached()
     if not raw_data:
-        st.error("❌ No se encontraron CSVs. Ejecute primero los experimentos.")
+        st.error("No se encontraron CSVs. Ejecute primero los experimentos.")
         st.stop()
 
     stats = compute_stats_cached(raw_data)
@@ -390,7 +385,7 @@ def run_dashboard():
     ]
 
     # ── Header ───────────────────────────────────────────────────────────
-    st.title("📊 Protocolos de Coordinación Distribuida")
+    st.title("Protocolos de Coordinacion Distribuida")
     st.markdown(
         "### Análisis experimental de 2PC, Saga, TCC y Raft bajo fallos "
         "en sistemas de bases de datos distribuidas"
@@ -401,36 +396,36 @@ def run_dashboard():
     col1, col2, col3, col4 = st.columns(4)
     with col1:
         total_ops = len(df_filtered)
-        st.metric("🧪 Operaciones totales", total_ops)
+        st.metric("Operaciones totales", total_ops)
     with col2:
         avg_lat = df_filtered["total_latency_ms"].mean()
-        st.metric("⏱️ Latencia media (ms)", f"{avg_lat:.2f}" if pd.notna(avg_lat) else "N/A")
+        st.metric("Latencia media (ms)", f"{avg_lat:.2f}" if pd.notna(avg_lat) else "N/A")
     with col3:
         success_count = df_filtered["exito"].value_counts().get("true", 0)
         success_pct = (success_count / total_ops * 100) if total_ops else 0
-        st.metric("✅ Tasa de éxito", f"{success_pct:.1f}%")
+        st.metric("Tasa de exito", f"{success_pct:.1f}%")
     with col4:
         avg_comp = df_filtered["compensaciones"].mean()
-        st.metric("🔄 Compensaciones promedio", f"{avg_comp:.2f}" if pd.notna(avg_comp) else "N/A")
+        st.metric("Compensaciones promedio", f"{avg_comp:.2f}" if pd.notna(avg_comp) else "N/A")
 
     st.markdown("---")
 
     # ── Tabs ─────────────────────────────────────────────────────────────
     tab_overview, tab_latency, tab_success, tab_comp, tab_recovery, tab_raw = \
         st.tabs([
-            "📋 Visión General",
-            "⏱️ Latencia",
-            "✅ Tasa de Éxito",
-            "🔄 Compensaciones",
-            "🔁 Recuperación",
-            "📄 Datos Crudos",
+            "Vision General",
+            "Latencia",
+            "Tasa de Exito",
+            "Compensaciones",
+            "Recuperacion",
+            "Datos Crudos",
         ])
 
     # =====================================================================
     # TAB 1: Visión General
     # =====================================================================
     with tab_overview:
-        st.subheader("📋 Visión General del Experimento")
+        st.subheader("Vision General del Experimento")
 
         st.markdown("""
         Este experimento evalúa **4 protocolos de coordinación distribuida**
@@ -477,7 +472,7 @@ def run_dashboard():
     # TAB 2: Latencia
     # =====================================================================
     with tab_latency:
-        st.subheader("⏱️ Análisis de Latencia")
+        st.subheader("Analisis de Latencia")
         st.markdown("""
         La **latencia total** mide el tiempo (en milisegundos) que toma completar
         una transacción desde que inicia hasta que finaliza (commit o rollback).
@@ -525,7 +520,7 @@ def run_dashboard():
         )
         st.plotly_chart(fig, width="stretch")
 
-        st.markdown("#### 📌 Conclusiones de latencia")
+        st.markdown("#### Conclusiones de latencia")
         conclusions = []
         for esc in selected_scenarios:
             vals = [(p, stats.get(p, {}).get(esc, {}).get("latency_mean", 0))
@@ -544,7 +539,7 @@ def run_dashboard():
 
         # Distribución de latencias (box plot)
         st.markdown("---")
-        st.markdown("#### 📦 Distribución de latencias por protocolo")
+        st.markdown("#### Distribucion de latencias por protocolo")
         fig_box = px.box(
             df_filtered,
             x="protocolo", y="total_latency_ms", color="protocolo",
@@ -567,7 +562,7 @@ def run_dashboard():
     # TAB 3: Tasa de Éxito
     # =====================================================================
     with tab_success:
-        st.subheader("✅ Análisis de Tasa de Éxito")
+        st.subheader("Analisis de Tasa de Exito")
         st.markdown("""
         La **tasa de éxito** mide qué porcentaje de transacciones se completaron
         satisfactoriamente en cada escenario.
@@ -607,7 +602,7 @@ def run_dashboard():
         )
         st.plotly_chart(fig, width="stretch")
 
-        st.markdown("#### 📌 Análisis por escenario")
+        st.markdown("#### Analisis por escenario")
         for esc in selected_scenarios:
             vals = [(p, stats.get(p, {}).get(esc, {}).get("success_rate", 0) * 100)
                     for p in selected_protocols]
@@ -615,12 +610,12 @@ def run_dashboard():
             if vals:
                 st.markdown(f"**{esc} – {ESC_LABELS[esc]}**:")
                 for p, v in vals:
-                    icon = "✅" if v == 100 else "⚠️" if v > 0 else "❌"
-                    st.markdown(f"  - {icon} **{p.upper()}**: {v:.1f}%")
+                    tag = "[OK]" if v == 100 else "[!]" if v > 0 else "[X]"
+                    st.markdown(f"  - {tag} **{p.upper()}**: {v:.1f}%")
 
         # Heatmap de éxito
         st.markdown("---")
-        st.markdown("#### 🔥 Mapa de calor: Tasa de éxito")
+        st.markdown("#### Mapa de calor: Tasa de exito")
         heat_data = []
         for proto in selected_protocols:
             row = []
@@ -652,7 +647,7 @@ def run_dashboard():
     # TAB 4: Compensaciones
     # =====================================================================
     with tab_comp:
-        st.subheader("🔄 Análisis de Compensaciones")
+        st.subheader("Analisis de Compensaciones")
         st.markdown("""
         Las **compensaciones** son operaciones que *deshacen* los efectos parciales
         de una transacción cuando algo falla. Son el mecanismo de *rollback* distribuido.
@@ -700,7 +695,7 @@ def run_dashboard():
                 st.metric(proto.upper(), f"{avg:.2f}")
 
         st.markdown("---")
-        st.markdown("#### 💡 Interpretación")
+        st.markdown("#### Interpretacion")
         st.info(
             "**Saga** suele tener más compensaciones porque cada paso fallido "
             "dispara una contratransacción específica. **2PC** y **TCC** "
@@ -712,7 +707,7 @@ def run_dashboard():
     # TAB 5: Recuperación
     # =====================================================================
     with tab_recovery:
-        st.subheader("🔁 Análisis de Recuperación (Escenario D)")
+        st.subheader("Analisis de Recuperacion (Escenario D)")
         st.markdown("""
         El **Escenario D** simula caída de un nodo y su posterior recuperación.
         Mide cuánto tiempo toma al protocolo restablecer el servicio después
@@ -729,7 +724,7 @@ def run_dashboard():
                 d_lats = [(p, stats.get(p, {}).get("D", {}).get("latency_mean", 0))
                           for p in selected_protocols]
                 st.metric(
-                    "🏆 Menor latencia en recuperación",
+                    "Menor latencia en recuperacion",
                     f"{min(d_lats, key=lambda x: x[1])[0].upper()} "
                     f"({min(d_lats, key=lambda x: x[1])[1]:.1f} ms)",
                 )
@@ -738,14 +733,14 @@ def run_dashboard():
                              for p in selected_protocols]
                 best_s = max(d_success, key=lambda x: x[1])
                 st.metric(
-                    "🏆 Mejor tasa de éxito en recuperación",
+                    "Mejor tasa de exito en recuperacion",
                     f"{best_s[0].upper()} ({best_s[1]:.1f}%)",
                 )
             with col_c:
                 d_comp = [(p, stats.get(p, {}).get("D", {}).get("compensations_mean", 0))
                           for p in selected_protocols]
                 st.metric(
-                    "🔄 Promedio compensaciones en recuperación",
+                    "Promedio compensaciones en recuperacion",
                     f"{statistics.mean([c for _, c in d_comp]):.2f}",
                 )
 
@@ -782,7 +777,7 @@ def run_dashboard():
     # TAB 6: Datos Crudos
     # =====================================================================
     with tab_raw:
-        st.subheader("📄 Datos crudos del experimento")
+        st.subheader("Datos crudos del experimento")
         st.markdown("""
         A continuación se muestran las filas completas de los CSVs cargados,
         filtradas según la selección de la barra lateral.
@@ -791,7 +786,7 @@ def run_dashboard():
 
         csv_download = df_filtered.to_csv(index=False).encode("utf-8")
         st.download_button(
-            label="📥 Descargar CSV filtrado",
+            label="Descargar CSV filtrado",
             data=csv_download,
             file_name="experiment_results_filtered.csv",
             mime="text/csv",
@@ -803,7 +798,9 @@ def run_dashboard():
 # ===========================================================================
 
 if __name__ == "__main__":
-    if any(arg in sys.argv for arg in ("--dashboard", "-d")):
+    # Auto-detectar ejecucion via `streamlit run` (streamlit ya esta en sys.modules)
+    _in_streamlit = "streamlit" in sys.modules
+    if _in_streamlit or any(arg in sys.argv for arg in ("--dashboard", "-d")):
         run_dashboard()
         sys.exit(0)
 
@@ -835,5 +832,5 @@ if __name__ == "__main__":
     plot_compensations(stats, graph_dir)
     plot_recovery_time(stats, graph_dir)
 
-    print("\n✓ Análisis completado")
-    print("💡 Ejecute el dashboard interactivo con: streamlit run analyze_results.py")
+    print("\n✓ Analisis completado")
+    print("💡 Dashboard interactivo: streamlit run analyze_results.py")

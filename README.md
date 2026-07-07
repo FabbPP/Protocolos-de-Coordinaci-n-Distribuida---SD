@@ -260,10 +260,41 @@ PROTOCOLO=raft ./run_all.sh A B C D
 | CSV vacío o sin filas | BD no inicializada correctamente | Verificar con `docker compose logs pg-arequipa` |
 
 
-# Realizamiento de graficas del articulo con matplotlib
+## Generación de gráficas con Matplotlib
+
+Las gráficas del artículo se generan con **Matplotlib** en Python desde los datos experimentales (CSV en `articulo/experiments/results/`).
+
+```bash
+# 1. Crear y activar entorno virtual
 pip install virtualenv
 virtualenv -p python env
-./env/Scripts/activate
-pip install -r requirements.txt 
+./env/Scripts/activate          # Windows
+# source env/bin/activate       # Linux/macOS
 
+# 2. Instalar dependencias
+pip install -r requirements.txt
+
+# 3. Generar gráficas PNG
 python articulo/experiments/analyze_results.py articulo/experiments/results articulo/experiments/graphs
+```
+
+## Dashboard Interactivo (Streamlit)
+
+El repositorio incluye un dashboard interactivo con **Streamlit** para explorar visualmente los resultados de los 4 protocolos (2PC, Saga, TCC, Raft) en los 4 escenarios (A–D).
+
+```bash
+# Desde el entorno virtual activado
+streamlit run articulo/experiments/analyze_results.py
+
+# Alternativa: modo dashboard directo
+cd articulo/experiments/
+python analyze_results.py --dashboard
+```
+
+Repositorio completo: https://github.com/FabbPP/Protocolos-de-Coordinaci-n-Distribuida---SD
+
+## Compilar el artículo (Typst)
+
+```bash
+typst compile .\articulo\charged-ieee-output\main.typ .\articulo\charged-ieee-output\charged-ieee.pdf
+```
