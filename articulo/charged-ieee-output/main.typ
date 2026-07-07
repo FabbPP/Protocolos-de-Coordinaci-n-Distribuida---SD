@@ -147,12 +147,19 @@ La infraestructura experimental consiste en tres contenedores PostgreSQL (pg-are
 #figure(
   placement: none,
   caption: [Topología de red experimental con tres contenedores PostgreSQL y un orquestador Python.],
-  image("figures/fig1_topologia.png", width: 100%),
+  image("figures/arquitectura.png", width: 100%),
 ) <fig:topology>
 
 == Protocolos Implementados
 
 - _2PC:_ Coordinador centralizado que ejecuta PREPARE (verificación de saldo y débito en origen) seguido de COMMIT (crédito en destino) sobre ambos nodos en una misma transacción distribuida con two-phase locking.
+
+#figure(
+  placement: none,
+  caption: [Topología de red experimental con tres contenedores PostgreSQL y un orquestador Python.],
+  image("figures/ejemplo2PC.png", width: 100%),
+) <fig:topology>
+
 - _Saga:_ Secuencia de dos transacciones locales independientes (débito, crédito). Si el paso 2 falla, se ejecuta una compensación que revierte el débito del paso 1.
 - _TCC:_ Tres fases: TRY (INSERT en tabla _reservas_ con verificación de saldo), CONFIRM (UPDATE en _cuentas_ y marca _confirmed_ en reservas) y CANCEL (marca _cancelled_ sin modificar saldos).
 - _Raft simplificado:_ Líder fijo (Arequipa, ID=0) con dos followers. Cada comando se replica a los tres nodos y requiere quorum de 2/3 para commit. El log se almacena en la tabla _raft_log_ de cada nodo.
