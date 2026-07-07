@@ -258,3 +258,12 @@ PROTOCOLO=raft ./run_all.sh A B C D
 | Puertos 5432-5434 ocupados | PostgreSQL local corriendo | `systemctl stop postgresql` o cambiar puertos en docker-compose.yml |
 | `tc: command not found` en add_latency | macOS/Windows sin netem | Normal en no-Linux; usar solo en Linux para latencia real |
 | CSV vacío o sin filas | BD no inicializada correctamente | Verificar con `docker compose logs pg-arequipa` |
+
+
+# Realizamiento de graficas del articulo con matplotlib
+pip install virtualenv
+virtualenv -p python env
+./env/Scripts/activate
+pip install -r requirements.txt 
+
+python articulo/experiments/analyze_results.py articulo/experiments/results articulo/experiments/graphs
